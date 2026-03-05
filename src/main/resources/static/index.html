@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>EasyRide | Smart Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&family=Heebo:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* פלטת צבעים עם נגיעות טבע */
+            --zeo-navy: #1a2b4b;       /* כחול-צי כהה */
+            --zeo-blue: #3b82f6;       /* כחול מודרני */
+            --zeo-green: #10b981;      /* ירוק אמרלד */
+            --zeo-teal: #14b8a6;       /* טורקיז עדין */
+            --zeo-bg: #f0fdf4;         /* רקע ירקרק עדין מאוד */
+            --zeo-card-bg: #ffffff;    /* לבן לכרטיסים */
+            --zeo-border: #e2e8f0;     /* אפור גבול עדין */
+            --zeo-text: #334155;       /* טקסט כהה */
+            --zeo-danger: #ef4444;     /* אדום למחיקה */
+        }
+
+        body { font-family: 'Assistant', 'Heebo', sans-serif; background-color: var(--zeo-bg); margin: 0; color: var(--zeo-text); scroll-behavior: smooth; }
+        
+        header { 
+            background-color: var(--zeo-navy); 
+            color: white; 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+
+        .container { padding: 40px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        
+        .card { 
+            background: var(--zeo-card-bg); 
+            border-radius: 12px; 
+            border: 1px solid var(--zeo-border); 
+            padding: 25px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02); 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        
+        .full-width { grid-column: span 2; }
+        
+        h2 { 
+            font-size: 1.15rem; 
+            margin: 0 0 20px 0; 
+            color: var(--zeo-navy); 
+            border-bottom: 2px solid var(--zeo-teal); /* גבול בצבע טורקיז */
+            padding-bottom: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        
+        h2 svg { width: 22px; height: 22px; fill: var(--zeo-navy); }
+
+        .field-group { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        
+        .field { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 6px; }
+        
+        label { font-size: 0.8rem; font-weight: 600; color: #64748b; }
+        
+        input, textarea { 
+            padding: 10px; 
+            border: 1px solid var(--zeo-border); 
+            border-radius: 6px; 
+            font-size: 0.9rem; 
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+        input:focus { outline: none; border-color: var(--zeo-green); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+        
+        button { 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            border: none; 
+            transition: 0.2s; 
+            font-size: 0.9rem;
+        }
+        
+        .btn-success { background-color: var(--zeo-green); color: white; }
+        .btn-success:hover { background-color: #059669; }
+
+        .btn-primary { background-color: var(--zeo-blue); color: white; }
+        .btn-primary:hover { background-color: #2563eb; }
+        
+        .btn-outline { background-color: transparent; border: 1px solid var(--zeo-border); color: var(--zeo-text); }
+        .btn-outline:hover { background-color: #f1f5f9; }
+        
+        .btn-danger { background-color: var(--zeo-danger); color: white; }
+        .btn-danger:hover { background-color: #dc2626; }
+        
+        #output { 
+            background: #fff; 
+            border: 2px solid var(--zeo-teal); 
+            border-radius: 12px; 
+            padding: 20px; 
+            font-family: 'Heebo', sans-serif; /* פונט מודרני גם לפלט */
+            font-size: 0.95rem; 
+            color: var(--zeo-navy); 
+            min-height: 80px; 
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-size: 1.4rem; font-weight: bold; letter-spacing: -1px;">EasyRide Console</div>
+    <div style="font-size: 0.8rem; opacity: 0.8;">Smart Transport Management</div>
+</header>
+
+<div class="container">
+    
+    <div class="card full-width" style="border-top: 5px solid var(--zeo-green);">
+        <h2>
+            <svg viewBox="0 0 24 24"><path d="M15 12h-2v2h2v-2zm4-8h-3V2h-2v2h-4V2H8v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zm0-13H5V6h14v1z"/></svg>
+            הקמת קו ומסלול תשתית
+        </h2>
+        <form onsubmit="return false;">
+            <div class="field-group">
+                <div class="field"><label>מספר קו</label><input type="text" id="ln" name="ln" placeholder="לדוגמה: 422"></div>
+                <div class="field"><label>מוצא</label><input type="text" id="src" name="src"></div>
+                <div class="field"><label>יעד</label><input type="text" id="dst" name="dst"></div>
+            </div>
+            <div class="field" style="margin-bottom: 20px;">
+                <label>מסלול תחנות (מופרד בפסיקים)</label>
+                <textarea id="stats" name="stats" rows="2"></textarea>
+            </div>
+            <button class="btn-success" onclick="runAction('/admin/add-line?line='+val('ln')+'&src='+val('src')+'&dest='+val('dst')+'&stations='+val('stats'), ['ln','src','dst','stats'])">צור קו ומסלול</button>
+        </form>
+    </div>
+
+    <div class="card" style="border-top: 5px solid var(--zeo-blue);">
+        <h2>
+            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+             תזמון נסיעות תפעולי
+        </h2>
+        <form onsubmit="return false;">
+            <div class="field-group" style="flex-direction: column;">
+                <div class="field"><label>קו קיים</label><input type="text" id="trLine" name="trLine"></div>
+                <div class="field"><label>שעת יציאה</label><input type="time" id="trTime" name="trTime"></div>
+            </div>
+            <button class="btn-primary" style="width: 100%; margin-top: 15px;" onclick="runAction('/admin/add-travel?line='+val('trLine')+'&time='+val('trTime'), ['trLine','trTime'])">הוסף נסיעה</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>
+            <svg viewBox="0 0 24 24"><path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/></svg>
+             עדכון מסלול בזמן אמת
+        </h2>
+        <form onsubmit="return false;">
+            <div class="field-group">
+                <div class="field"><label>קו</label><input type="text" id="upLine" name="upLine"></div>
+                <div class="field"><label>תחנה</label><input type="text" id="upStat" name="upStat"></div>
+                <div class="field"><label>מיקום</label><input type="number" id="upOrd" name="upOrd"></div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="btn-primary" style="flex:1" onclick="runAction('/admin/update-path?line='+val('upLine')+'&station='+val('upStat')+'&order='+val('upOrd')+'&add=true', ['upStat','upOrd'])">הוסף</button>
+                <button class="btn-danger" style="flex:1" onclick="runAction('/admin/update-path?line='+val('upLine')+'&station='+val('upStat')+'&order=0&add=false', ['upStat'])">הסר</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card full-width">
+        <h2>
+            <svg viewBox="0 0 24 24"><path d="M12 2c-4.41 0-8 3.59-8 8v9c0 1.66 1.34 3 3 3h1v-2H7c-.55 0-1-.45-1-1v-2h4v-1c0-.55-.45-1-1-1H7v-4h10v4h-3c-.55 0-1 .45-1 1v1h4v2c0 .55-.45 1-1 1h-1v2h1c1.66 0 3-1.34 3-3V10c0-4.41-3.59-8-8-8zm4 7H8V5h8v4z"/></svg>
+             שירות נוסעים (קל-קו)
+        </h2>
+        <form onsubmit="return false;">
+            <div class="field-group">
+                <div class="field"><label>קו מבוקש</label><input type="text" id="pLine" name="pLine"></div>
+                <div class="field"><label>תחנה נוכחית</label><input type="text" id="pStat" name="pStat"></div>
+                <div class="field"><label>שעה (לחיפוש קרובות)</label><input type="time" id="pTime" name="pTime"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                <button class="btn-outline" onclick="apiCall('/passenger/arrival?line='+val('pLine')+'&station='+val('pStat'))">מתי יגיע?</button>
+                <button class="btn-outline" onclick="apiCall('/passenger/stations?line='+val('pLine'))">כל התחנות</button>
+                <button class="btn-outline" onclick="apiCall('/passenger/upcoming?station='+val('pStat')+'&time='+val('pTime'))">בשעה הקרובה</button>
+                <button class="btn-outline" onclick="apiCall('/passenger/last?line='+val('pLine'))">נסיעה אחרונה</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="full-width">
+        <div id="output">SYSTEM LOG: Awaiting command...</div>
+    </div>
+</div>
+
+<script>
+    function val(id) { return document.getElementById(id).value; }
+    
+    function clearFields(ids) {
+        setTimeout(() => {
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = "";
+            });
+        }, 150); 
+    }
+
+    async function apiCall(url) {
+        const out = document.getElementById('output');
+        out.innerText = "PROCESSING...";
+        try {
+            const res = await fetch(encodeURI(url));
+            const data = await res.text();
+            out.innerHTML = data;
+            out.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        } catch (e) { out.innerText = "COMMUNICATION ERROR"; }
+    }
+
+    async function runAction(url, fieldsToClear) {
+        await apiCall(url);
+        clearFields(fieldsToClear);
+    }
+</script>
+
+</body>
+</html>
